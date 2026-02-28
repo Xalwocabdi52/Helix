@@ -96,67 +96,92 @@ cd ~/Developer/Helix
 cp .env.example .env
 ```
 
-Open `.env` and fill in at minimum:
+Open `.env` in any text editor. You need to fill in three values. Here's exactly how to find each one — open Terminal and run these commands:
 
+**`PROJECT_ROOT`** — the folder you just cloned. Run this, then copy the result:
 ```bash
-PROJECT_ROOT=/Users/yourname/Developer/Helix
-CLAUDE_BIN=$(which claude)
-NODE_BIN=$(which node)
+echo $HOME/Developer/Helix
 ```
 
-### 2. Build
+**`CLAUDE_BIN`** — where the `claude` command lives on your machine. Run this, then copy the result:
+```bash
+which claude
+```
+It'll look something like `/Users/yourname/.local/bin/claude`
+
+**`NODE_BIN`** — where Node.js lives. Run this, then copy the result:
+```bash
+which node
+```
+It'll look something like `/Users/yourname/.nvm/versions/node/v20.0.0/bin/node`
+
+> If `which node` returns nothing, you need to install Node.js first:
+> ```bash
+> curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+> source ~/.zshrc
+> nvm install 20
+> ```
+> Then run `which node` again.
+
+Your finished `.env` should look something like this:
+```bash
+PROJECT_ROOT=/Users/janedoe/Developer/Helix
+CLAUDE_BIN=/Users/janedoe/.local/bin/claude
+NODE_BIN=/Users/janedoe/.nvm/versions/node/v20.15.0/bin/node
+```
+
+### 2. Install and build
+
+Run this one command — it installs everything and compiles all 4 MCP servers:
 
 ```bash
 bash scripts/setup.sh
 ```
 
-Installs and builds all 4 MCP servers. Manual alternative:
+This will take a minute. You'll see npm output scrolling by. That's normal. When it finishes you'll see "Setup complete."
+
+### 3. Point the MCP servers at your machine
+
+The setup script does this automatically. If it didn't work, run these three lines manually (with your `.env` already filled in):
 
 ```bash
-for server in mcp-servers/helix-mac mcp-servers/helix-memory mcp-servers/helix-agents mcp-servers/helix-telegram; do
-  cd $server && npm install && npm run build && cd ../..
-done
-```
-
-### 3. Register MCP servers
-
-The setup script patches `.mcp.json` automatically. To do it manually:
-
-```bash
+source .env
 sed -i '' "s|PROJECT_ROOT|$PROJECT_ROOT|g" .mcp.json
 sed -i '' "s|NODE_BIN|$NODE_BIN|g" .mcp.json
 sed -i '' "s|CLAUDE_BIN|$CLAUDE_BIN|g" .mcp.json
 ```
 
-Verify: `claude mcp list` — all four servers should appear.
+To confirm it worked, run `claude mcp list` — you should see all four servers listed: `helix-mac`, `helix-memory`, `helix-agents`, `helix-telegram`.
 
-### 4. Set your identity
+### 4. Give your agent a name
 
-Open `CLAUDE.md` and replace the placeholders:
+Open `CLAUDE.md` in a text editor. Near the top, find these three placeholders and replace them with whatever you want:
 
-| Placeholder | Replace with |
-|-------------|-------------|
-| `{{AGENT_NAME}}` | Your agent's name |
+| Find this | Replace with |
+|-----------|-------------|
+| `{{AGENT_NAME}}` | What you want to call your AI (e.g. "Aria", "Max", "Nova") |
 | `{{USER_NAME}}` | Your name |
-| `{{NICKNAME}}` | What you want to be called |
+| `{{NICKNAME}}` | What you want it to call you (e.g. "Boss", "Chief", your first name) |
 
-### 5. Launch
+### 5. Start it up
 
 ```bash
 claude
 ```
 
-All 4 MCP tools load automatically. Test with `memory_remember`, `app_list`, or `gcal_list`.
+That's it. Your agent starts, loads all 4 tool servers, and is ready. Try asking it to remember something, check your calendar, or open an app. It can do all of that now.
 
 <details>
-<summary><strong>Troubleshooting</strong></summary>
+<summary><strong>Something not working?</strong></summary>
 
-**MCP server not loading** — check `claude mcp list` for errors, or run the server manually:
+**"helix-mac not found" or similar** — run `claude mcp list` to see what's loaded. If a server is missing, check that the path in `.mcp.json` points to a real file. Run `ls mcp-servers/helix-mac/dist/` to confirm it was built.
+
+**MCP server crashes on startup** — run it directly to see the error:
 ```bash
 node mcp-servers/helix-mac/dist/index.js
 ```
 
-**Telegram not responding** — verify the bot token and confirm your user ID is in `TELEGRAM_ALLOWED_USER_IDS`:
+**Telegram not responding** — verify your bot token is valid:
 ```bash
 curl https://api.telegram.org/bot<TOKEN>/getMe
 ```
