@@ -62,27 +62,150 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full picture.
 
 ---
 
-## Quick Start
+## Setup
+
+### 1. Clone and configure
 
 ```bash
-git clone https://github.com/JonJLevesque/Helix.git
-cd Helix
+git clone https://github.com/JonJLevesque/Helix.git ~/Developer/Helix
+cd ~/Developer/Helix
 cp .env.example .env
-# Edit .env — fill in PROJECT_ROOT, CLAUDE_BIN, NODE_BIN
+```
+
+Open `.env` and fill in at minimum:
+
+```bash
+PROJECT_ROOT=/Users/yourname/Developer/Helix
+CLAUDE_BIN=$(which claude)
+NODE_BIN=$(which node)
+```
+
+### 2. Build MCP servers
+
+```bash
 bash scripts/setup.sh
 ```
 
-Full walkthrough → [SETUP.md](SETUP.md)
+This installs npm packages across all 4 MCP servers and builds TypeScript. Manual alternative:
+
+```bash
+for server in mcp-servers/nova-mac mcp-servers/nova-memory mcp-servers/nova-agents mcp-servers/nova-telegram; do
+  cd $server && npm install && npm run build && cd ../..
+done
+```
+
+### 3. Configure MCP servers
+
+`.mcp.json` registers all 4 servers with Claude Code. The setup script patches the paths automatically. To do it manually:
+
+```bash
+sed -i '' "s|PROJECT_ROOT|$PROJECT_ROOT|g" .mcp.json
+sed -i '' "s|NODE_BIN|$NODE_BIN|g" .mcp.json
+sed -i '' "s|CLAUDE_BIN|$CLAUDE_BIN|g" .mcp.json
+```
+
+Verify: `claude mcp list` — you should see all four servers.
+
+### 4. Set your identity
+
+Open `CLAUDE.md` and replace the placeholders:
+
+| Placeholder | Replace with |
+|-------------|-------------|
+| `{{AGENT_NAME}}` | Your agent's name |
+| `{{USER_NAME}}` | Your name |
+| `{{NICKNAME}}` | What you want to be called |
+
+### 5. Launch
+
+```bash
+claude
+```
+
+All 4 MCP servers load automatically. Test with `memory_remember`, `app_list`, or `gcal_list`.
+
+### Troubleshooting
+
+**MCP server not loading** — check `claude mcp list` for errors, or run the server manually: `node mcp-servers/nova-mac/dist/index.js`
+
+**Telegram not responding** — verify bot token: `curl https://api.telegram.org/bot<TOKEN>/getMe` and confirm your user ID is in `TELEGRAM_ALLOWED_USER_IDS`
 
 ---
 
 ## Voice Mode
 
-Local Whisper + Kokoro. No cloud. No latency spikes.
+Local Whisper (STT) + Kokoro (TTS). No cloud. No per-word API cost.
 
-Once configured, `claude` greets you by voice at session start, listens for 6 seconds, and stays in voice mode as long as you talk back. Falls back to text silently.
+```
+You speak → USB Mic → Whisper → transcript → Claude → response text → Kokoro → speakers
+```
 
-Setup guide → [docs/VOICE-SETUP.md](docs/VOICE-SETUP.md)
+At session start, Claude runs a health check, then greets you by voice and listens for 6 seconds. If you talk back, it stays in voice mode. If you type, it silently falls back to text.
+
+### 1. Install Whisper
+
+Any OpenAI-compatible `/v1/audio/transcriptions` endpoint works. Easiest:
+
+```bash
+pip install faster-whisper-server
+faster-whisper-server --port 2022 --model base.en
+```
+
+Verify: `curl http://localhost:2022/health` → `{"status":"ok"}`
+
+Model options: `tiny.en` (fastest, ~50MB) · `base.en` (balanced, ~150MB) · `small.en` (more accurate, ~450MB)
+
+### 2. Install Kokoro
+
+```bash
+pip install kokoro-onnx
+kokoro-server --port 8880
+```
+
+Verify: `curl http://localhost:8880/health` → `{"status":"healthy"}`
+
+### 3. Set audio input
+
+```bash
+brew install switchaudio-osx
+SwitchAudioSource -s "USB PnP Audio Device" -t input
+```
+
+### 4. Test
+
+```bash
+bash services/voice-health-check.sh
+```
+
+All three services should show ✓. If anything fails: `bash services/voice-auto-recover.sh`
+
+### Running at login (recommended)
+
+Create launchd plists for Whisper and Kokoro so they're ready when Claude starts. Basic template:
+
+```xml
+<key>Label</key><string>com.helix.whisper</string>
+<key>ProgramArguments</key>
+<array>
+  <string>/path/to/faster-whisper-server</string>
+  <string>--port</string><string>2022</string>
+  <string>--model</string><string>base.en</string>
+</array>
+<key>RunAtLoad</key><true/>
+<key>KeepAlive</key><true/>
+```
+
+### VAD tuning
+
+If Claude cuts you off too early or waits too long after you stop speaking, tune in `~/.voicemode/voicemode.env`:
+
+```bash
+VOICEMODE_VAD_AGGRESSIVENESS=3   # 0=permissive, 3=strict
+VOICEMODE_LISTEN_DURATION_MIN=2.0
+VOICEMODE_SAMPLE_RATE=32000      # must match your Whisper server
+```
+
+`vad_aggressiveness=3` with USB direct (no noise gate) correctly ignores ambient hum.
 
 ---
 
