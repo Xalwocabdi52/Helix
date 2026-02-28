@@ -2,9 +2,9 @@
 
 # ⬡ Helix
 
-**A personal AI OS for macOS, powered by Claude.**
+**What Siri should have been.**
 
-*Persistent memory. System control. Local voice. Autonomous loops. All yours.*
+*Your Mac's AI — persistent memory, system control, voice, and autonomous tasks. All running locally. All yours.*
 
 <br/>
 
@@ -18,69 +18,72 @@
 
 ---
 
-Helix is not a chat app. It's infrastructure — an identity layer, four MCP servers, a voice pipeline, and a loop framework that lets Claude **do things** autonomously on your Mac.
+Helix is not a chat app. It's a framework that turns Claude into a personal AI that actually *does things* — opens apps, checks your calendar, remembers things between sessions, runs scheduled tasks while you sleep, and talks back to you out loud if you want it to.
 
-You fork it, configure it, and own it. Your agent. Your rules.
+You fork it, configure it, and own it. **Your agent. Your rules. Your Mac.**
 
 ---
 
-## What It Is
+## What It Does
 
-Four MCP servers that plug directly into Claude Code:
+Helix gives Claude four new superpowers by installing "plugins" (called MCP servers) that connect Claude directly to your Mac:
 
-| Server | What it does |
+| Plugin | What it does |
 |--------|-------------|
-| `helix-mac` | macOS control — apps, Chrome, Calendar, Reminders, Notes, Music, Finder |
-| `helix-memory` | Persistent JSON memory with keyword search — survives across sessions |
-| `helix-agents` | Spawn background Claude agents, schedule them via launchd, coordinate via messages |
-| `helix-telegram` | Remote access — control your agent from your phone via Telegram |
+| `helix-mac` | Controls your Mac — opens apps, manages Chrome tabs, reads your Calendar, Reminders, Notes, Music, and Finder |
+| `helix-memory` | Remembers things between sessions — no more re-explaining yourself every time you open Claude |
+| `helix-agents` | Runs Claude tasks on a schedule automatically, even when you're not at your computer |
+| `helix-telegram` | Lets you control your agent from your phone via Telegram |
 
-Plus three layers on top:
+Plus three things built on top of those:
 
-- **Voice** — local Whisper (STT) + Kokoro (TTS), auto health check and recovery at every session start
-- **Loops** — autonomous scheduled tasks via launchd (content posting, briefings, monitoring, anything)
-- **Identity** — `CLAUDE.md` defines who your agent is, what it knows, and how it behaves
+- **Voice** — Talk to Claude out loud. It listens, responds, and talks back. All runs on your Mac — no cloud, no subscription, no per-word cost.
+- **Loops** — Automated tasks that run on a schedule, like a morning briefing, content drafting, or anything you want Claude to do repeatedly without you asking.
+- **Identity** — A `CLAUDE.md` file where you define your agent's name, personality, and behavior. It reads this every session — it's how your agent knows who it is and what to do.
 
 ## What It's Not
 
-> Not a cloud service. Not cross-platform. Not a UI.
+> **Not a web app. Not cross-platform. Not a managed service.**
 >
-> Helix runs entirely on your Mac, uses AppleScript and launchd natively, and you interact through the `claude` CLI. If that's not your thing, this isn't your thing.
+> Helix runs entirely on your Mac. You interact with it through the Terminal (specifically, the `claude` command). If you've never opened Terminal, this might have a learning curve — but the setup guide below walks you through every step.
 
 ---
 
-## Built to Stay Inside the Lines
+## Why This Won't Get Your Account Banned
 
-Helix is the macOS-native alternative to frameworks like OpenClawd — built from the start for **control, security, and long-term scalability**, without touching Anthropic's Terms of Service.
+There are other frameworks out there that let you run Claude automatically — but some of them do it in ways that violate Anthropic's rules (scraping API keys, using unofficial access methods, etc.). Helix is built differently.
 
-**How it stays compliant:**
+**Here's what makes Helix safe to run long-term:**
 
-- **Official tooling only.** Helix runs Claude Code's `claude` CLI — the same tool you use interactively, just called headlessly via `claude --print`. This is an explicitly documented and supported use case. No unofficial API access, no session hijacking, no key scraping.
-- **No third-party AI.** Every inference call goes through your own Claude subscription. No OpenAI, no Gemini, no model proxies. One model, one account, your control.
-- **MCP is the sanctioned extension layer.** Anthropic built and maintains the Model Context Protocol specifically so developers can extend Claude with custom tools. Helix uses it exactly as designed.
-- **Agentic use is documented.** Multi-agent orchestration, background `claude` processes, scheduled tasks — all of these are first-party patterns that appear in Anthropic's own Claude Code documentation with examples.
-- **Nothing leaves your machine.** Memory is local JSON. Voice runs on local Whisper and Kokoro servers. Logs stay on disk. Your data doesn't touch a cloud you don't control.
+- **It uses the official Claude app, period.** Helix runs the same `claude` command you use in Terminal every day — just automated. Anthropic explicitly documents and supports this use case.
+- **No other AI services.** Every request goes through your own Claude account. No OpenAI, no Gemini, no third-party proxies. One model, one account, your control.
+- **Plugins are the official way to extend Claude.** Anthropic built MCP (the plugin system Helix uses) specifically for this purpose. We're using it exactly as designed.
+- **Nothing leaves your Mac.** Memory is a file on your disk. Voice runs on software installed on your machine. Logs stay local. Nothing goes to a server you don't control.
 
-**What this means for you:** Helix can run autonomously, indefinitely, without the risk of your account being flagged or your access cut off because a framework was doing something it shouldn't. Build on a foundation that's designed to last.
+**The bottom line:** Helix can run indefinitely without risking your account because it's built on top of tools Anthropic explicitly supports — not around them.
 
-> **Note on loops:** The framework itself is TOS-safe. What your loops *do* is your responsibility — check the terms of any platform you interact with, use official APIs where they exist, and disclose AI involvement where required.
+> **One note:** The framework is safe. What you *automate with it* is your responsibility. If you build a loop that posts to Twitter or Reddit, check those platforms' rules first.
 
 ---
 
-## Architecture
+## How It Works (Plain English)
+
+Here's the basic picture:
 
 ```
-You ←→ Claude Code (claude CLI)
+You ←→ Claude (in Terminal)
            │
-           ├── helix-mac      → macOS + Chrome
-           ├── helix-memory   → Persistent state
-           ├── helix-agents   → Background workers + scheduling
-           └── helix-telegram → Telegram relay
-                    │
-              CLAUDE.md  ·  .env
+           ├── helix-mac      → your Mac, your apps, your browser
+           ├── helix-memory   → remembers things between sessions
+           ├── helix-agents   → runs tasks on a schedule
+           └── helix-telegram → your phone (optional)
 ```
 
-Loops run on launchd schedules, write logs to `agents/logs/`, and surface blockers via `agents/messages/pending-tasks.json`. Voice, text, and Telegram sessions all share state through `helix-memory`.
+When you type `claude` in Terminal, Claude loads all four plugins automatically. It reads your `CLAUDE.md` file to know its name and personality, then it's ready to go.
+
+**Scheduled loops** are separate Claude sessions that wake up on a timer (like "every 30 minutes" or "every morning at 8am"), do one task, then go back to sleep. They log what they did to a file you can check later.
+
+**All sessions share the same memory** — so your phone (via Telegram), your voice session, and your text session all know what's going on with each other.
 
 → [Full architecture docs](docs/ARCHITECTURE.md)
 
@@ -88,7 +91,23 @@ Loops run on launchd schedules, write logs to `agents/logs/`, and surface blocke
 
 ## Setup
 
-### 1. Clone and configure
+### Before you start — what you need
+
+1. **A Mac running macOS 14 or later** (Sonoma or newer — check in  → About This Mac)
+2. **Claude Code installed** — this is the `claude` command in Terminal. Get it at [claude.ai/claude-code](https://claude.ai/claude-code) if you don't have it yet. Run `claude --version` to check.
+3. **Node.js 20 or later** — this is the engine that runs the Helix plugins. If you're not sure, run `node --version` in Terminal. If you get "command not found", install it:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+source ~/.zshrc
+nvm install 20
+```
+
+---
+
+### Step 1 — Download Helix
+
+Open Terminal and run:
 
 ```bash
 git clone https://github.com/JonJLevesque/Helix.git ~/Developer/Helix
@@ -96,9 +115,15 @@ cd ~/Developer/Helix
 cp .env.example .env
 ```
 
-Open `.env` in any text editor. You need to fill in three values. Here's exactly how to find each one — open Terminal and run these commands:
+This downloads Helix into a folder called `Developer/Helix` in your home directory and creates a config file called `.env` from the example.
 
-**`PROJECT_ROOT`** — the folder you just cloned. Run this, then copy the result:
+---
+
+### Step 2 — Fill in your config
+
+Open the `.env` file in any text editor (TextEdit works fine — just make sure it saves as plain text, not rich text). You need to fill in three values. Here's exactly how to find each one:
+
+**`PROJECT_ROOT`** — the full path to the Helix folder you just downloaded. Run this in Terminal, then copy the result:
 ```bash
 echo $HOME/Developer/Helix
 ```
@@ -115,14 +140,6 @@ which node
 ```
 It'll look something like `/Users/yourname/.nvm/versions/node/v20.0.0/bin/node`
 
-> If `which node` returns nothing, you need to install Node.js first:
-> ```bash
-> curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
-> source ~/.zshrc
-> nvm install 20
-> ```
-> Then run `which node` again.
-
 Your finished `.env` should look something like this:
 ```bash
 PROJECT_ROOT=/Users/janedoe/Developer/Helix
@@ -130,30 +147,32 @@ CLAUDE_BIN=/Users/janedoe/.local/bin/claude
 NODE_BIN=/Users/janedoe/.nvm/versions/node/v20.15.0/bin/node
 ```
 
-### 2. Install and build
+---
 
-Run this one command — it installs everything and compiles all 4 MCP servers:
+### Step 3 — Install and build
+
+Run this one command — it installs everything and compiles all 4 plugins:
 
 ```bash
 bash scripts/setup.sh
 ```
 
-This will take a minute. You'll see npm output scrolling by. That's normal. When it finishes you'll see "Setup complete."
+This will take a minute. You'll see a lot of output scrolling by — that's normal. When it finishes you'll see **"Setup complete."**
 
-### 3. Point the MCP servers at your machine
+---
 
-The setup script does this automatically. If it didn't work, run these three lines manually (with your `.env` already filled in):
+### Step 4 — Confirm the plugins loaded
 
+Run:
 ```bash
-source .env
-sed -i '' "s|PROJECT_ROOT|$PROJECT_ROOT|g" .mcp.json
-sed -i '' "s|NODE_BIN|$NODE_BIN|g" .mcp.json
-sed -i '' "s|CLAUDE_BIN|$CLAUDE_BIN|g" .mcp.json
+claude mcp list
 ```
 
-To confirm it worked, run `claude mcp list` — you should see all four servers listed: `helix-mac`, `helix-memory`, `helix-agents`, `helix-telegram`.
+You should see all four listed: `helix-mac`, `helix-memory`, `helix-agents`, `helix-telegram`. If any are missing, the setup script also prints instructions for fixing it manually.
 
-### 4. Give your agent a name
+---
+
+### Step 5 — Name your agent
 
 Open `CLAUDE.md` in a text editor. Near the top, find these three placeholders and replace them with whatever you want:
 
@@ -163,20 +182,22 @@ Open `CLAUDE.md` in a text editor. Near the top, find these three placeholders a
 | `{{USER_NAME}}` | Your name |
 | `{{NICKNAME}}` | What you want it to call you (e.g. "Boss", "Chief", your first name) |
 
-### 5. Start it up
+---
+
+### Step 6 — Start it up
 
 ```bash
 claude
 ```
 
-That's it. Your agent starts, loads all 4 tool servers, and is ready. Try asking it to remember something, check your calendar, or open an app. It can do all of that now.
+That's it. Your agent starts, loads all 4 plugins, and is ready to go. Try asking it to remember something, check your calendar, or open an app.
 
 <details>
 <summary><strong>Something not working?</strong></summary>
 
 **"helix-mac not found" or similar** — run `claude mcp list` to see what's loaded. If a server is missing, check that the path in `.mcp.json` points to a real file. Run `ls mcp-servers/helix-mac/dist/` to confirm it was built.
 
-**MCP server crashes on startup** — run it directly to see the error:
+**Plugin crashes on startup** — run it directly to see the error message:
 ```bash
 node mcp-servers/helix-mac/dist/index.js
 ```
@@ -192,142 +213,166 @@ curl https://api.telegram.org/bot<TOKEN>/getMe
 
 ## Voice Mode
 
-Local Whisper + Kokoro. No cloud. No per-word cost.
+Voice mode lets you talk to your agent out loud. It listens, thinks, and talks back — all running locally on your Mac. No cloud service. No per-word charge. No one listening.
 
+**How it works:**
 ```
-USB Mic → Whisper (STT) → Claude → Kokoro (TTS) → speakers
+Your voice → Whisper (turns speech into text) → Claude (thinks) → Kokoro (speaks the response) → your speakers
 ```
 
-At session start, Claude runs a health check, greets you by voice, and listens for 6 seconds. Talk back and it stays in voice mode. Type and it silently falls back to text.
+When you start a session, your agent greets you by voice and listens for 6 seconds. Talk back and it stays in voice mode. Type instead and it silently switches to text. The mode switches automatically — you don't have to do anything.
 
-### 1. Install Whisper
+### Step 1 — Install Whisper (speech-to-text)
 
-Any OpenAI-compatible `/v1/audio/transcriptions` endpoint works. Easiest:
+Whisper is the software that turns your voice into text. Install it with Python's package manager:
 
 ```bash
 pip install faster-whisper-server
 faster-whisper-server --port 2022 --model base.en
 ```
 
-`curl http://localhost:2022/health` → `{"status":"ok"}`
+To confirm it's running, open a new Terminal tab and run:
+```bash
+curl http://localhost:2022/health
+```
+You should see: `{"status":"ok"}`
 
-> **Model options:** `tiny.en` (~50MB, fastest) · `base.en` (~150MB, balanced) · `small.en` (~450MB, most accurate)
+> **Which model to use:**
+> - `tiny.en` — ~50MB download, responds fastest, slightly less accurate
+> - `base.en` — ~150MB download, good balance (recommended to start)
+> - `small.en` — ~450MB download, most accurate, slightly slower
 
-### 2. Install Kokoro
+### Step 2 — Install Kokoro (text-to-speech)
+
+Kokoro is the software that converts Claude's text responses into spoken audio:
 
 ```bash
 pip install kokoro-onnx
 kokoro-server --port 8880
 ```
 
-`curl http://localhost:8880/health` → `{"status":"healthy"}`
+To confirm it's running:
+```bash
+curl http://localhost:8880/health
+```
+You should see: `{"status":"healthy"}`
 
-### 3. Set audio input
+### Step 3 — Set your microphone as the audio input
+
+Install a small tool that lets you switch audio inputs from the command line:
 
 ```bash
 brew install switchaudio-osx
+```
+
+Then set your microphone as the input source (replace `"USB PnP Audio Device"` with your mic's name if different — check System Settings → Sound → Input to see the exact name):
+```bash
 SwitchAudioSource -s "USB PnP Audio Device" -t input
 ```
 
-### 4. Test
+### Step 4 — Test everything
 
 ```bash
 bash services/voice-health-check.sh
 ```
 
-All three services show ✓ → you're good. If anything fails:
+If all three services show ✓ you're done. If anything shows ✗:
 
 ```bash
 bash services/voice-auto-recover.sh
 ```
 
-<details>
-<summary><strong>VAD tuning + running at login</strong></summary>
+This script tries to restart whatever's not running. Run the health check again after.
 
-**Tune voice activity detection** in `~/.voicemode/voicemode.env`:
+<details>
+<summary><strong>Voice cutting out or not detecting silence correctly?</strong></summary>
+
+Edit `~/.voicemode/voicemode.env` (create it if it doesn't exist):
 
 ```bash
-VOICEMODE_VAD_AGGRESSIVENESS=3    # 0=permissive, 3=strict
-VOICEMODE_LISTEN_DURATION_MIN=2.0
-VOICEMODE_SAMPLE_RATE=32000       # must match your Whisper server
+VOICEMODE_VAD_AGGRESSIVENESS=3    # How strict silence detection is: 0 = permissive, 3 = strict
+VOICEMODE_LISTEN_DURATION_MIN=2.0 # Minimum seconds to listen before cutting off
+VOICEMODE_SAMPLE_RATE=32000       # Audio sample rate — must match your Whisper server
 ```
 
-`vad_aggressiveness=3` on USB direct correctly ignores ambient hum without a noise gate.
+`VAD_AGGRESSIVENESS=3` works well for USB microphones in a room with background noise (fan, AC, computer hum). If it cuts you off too early, try `2`.
 
-**Run at login** — create launchd plists for Whisper and Kokoro so they're ready before Claude starts. See `config/com.helix.template-loop.plist` for the plist structure.
+**Run voice services at login** so they're ready before you start Claude: create launchd plists for Whisper and Kokoro. See `config/com.helix.template-loop.plist` for the structure — it's the same pattern.
 
 </details>
 
 ---
 
-## Loops
+## Loops (Automated Tasks)
 
-Loops are Claude agents that run on a schedule via launchd. Every tick: read state → execute one action → update state → exit.
+A loop is a Claude task that runs automatically on a schedule — like a cron job, but Claude is the one doing the work.
 
-```
-launchd (StartInterval)
-  → run.sh
-  → prompt-template.sh  (builds the prompt)
-  → claude --print ...
-  → MCP tools execute
-  → state file updated
-  → exit
-```
+**How it works in plain English:**
+1. macOS wakes up the loop on a timer (every 30 minutes, every hour, once a day — whatever you set)
+2. A script reads the current state (what's been done, what's queued, what time it is)
+3. Claude gets a prompt describing the situation and picks one action to take
+4. Claude does the thing (writes a draft, pulls data, checks something, logs a result)
+5. The state file gets updated
+6. The loop goes back to sleep
 
-A scaffold is in `services/template-loop/`. A real anonymized example (content marketing loop) is in `examples/content-loop/`.
+The key rule: **one action per run.** Loops are designed to be focused and reliable, not to do everything at once.
 
-→ [Full loop guide](docs/LOOPS-GUIDE.md)
+**What can loops do?** Anything Claude can do with your tools: draft content, pull data from APIs, check your calendar, write to files, send Telegram messages, call web services, log results. The example in this repo shows a content marketing loop that researches topics and drafts newsletter issues.
+
+**To build your own loop**, start with the scaffold in `services/template-loop/` — it has everything wired up, you just fill in what you want Claude to actually do.
+
+→ [Full loop guide with examples](docs/LOOPS-GUIDE.md)
 
 ---
 
-## Directory Structure
+## What's in the Box
 
 ```
 helix/
-├── CLAUDE.md                        # Agent identity — start here
-├── .env.example                     # All variables documented
+├── CLAUDE.md              ← Start here — your agent's name, personality, rules
+├── .env.example           ← Config template with every variable explained
 ├── mcp-servers/
-│   ├── helix-mac/                    # macOS + Chrome control
-│   ├── helix-memory/                 # Persistent JSON memory
-│   ├── helix-agents/                 # Agent spawning + scheduling
-│   └── helix-telegram/               # Telegram relay
+│   ├── helix-mac/         ← The plugin that controls your Mac and Chrome
+│   ├── helix-memory/      ← The plugin that remembers things between sessions
+│   ├── helix-agents/      ← The plugin that runs and schedules background tasks
+│   └── helix-telegram/    ← The plugin that connects your phone via Telegram
 ├── services/
-│   ├── voice-health-check.sh
-│   ├── voice-auto-recover.sh
-│   ├── noise-gate/                  # Optional noise reduction
-│   └── template-loop/               # Loop scaffold
+│   ├── voice-health-check.sh  ← Checks that voice services are running
+│   ├── voice-auto-recover.sh  ← Restarts voice services if they crashed
+│   ├── noise-gate/            ← Optional audio filtering (advanced)
+│   └── template-loop/         ← Starter template for building your own loop
 ├── agents/
-│   ├── schedules/                   # launchd-triggered scripts
-│   └── messages/                    # Inter-agent queue + pending tasks
+│   ├── schedules/         ← Example scheduled task scripts (morning brief, etc.)
+│   └── messages/          ← Where loops leave notes for you or each other
 ├── config/
-│   ├── safety.json                  # Blocked commands + rate limits
-│   ├── example-persona.md           # Persona template
-│   └── com.helix.template-loop.plist
+│   ├── safety.json        ← Commands Claude is blocked from running
+│   ├── example-persona.md ← Template for writing your agent's personality
+│   └── com.helix.template-loop.plist  ← Template for scheduling a loop via macOS
 ├── examples/
-│   └── content-loop/                # Real-world loop, anonymized
+│   └── content-loop/      ← A real-world content marketing loop, fully anonymized
 ├── docs/
-│   ├── ARCHITECTURE.md
-│   ├── MCP-SERVERS.md
-│   ├── VOICE-SETUP.md
-│   └── LOOPS-GUIDE.md
+│   ├── ARCHITECTURE.md    ← How all the pieces fit together
+│   ├── MCP-SERVERS.md     ← Full tool reference for each plugin
+│   ├── VOICE-SETUP.md     ← Detailed voice setup guide
+│   └── LOOPS-GUIDE.md     ← How to build and schedule your own loops
 └── scripts/
-    └── setup.sh
+    └── setup.sh           ← First-run installer — run this once
 ```
 
 ---
 
 ## Requirements
 
-**Required**
-- macOS 14+ (Apple Silicon recommended)
-- [Claude Code](https://claude.ai/claude-code) — `claude` CLI
-- Node.js 20+ (nvm recommended)
+**You need these to run Helix:**
+- Mac running macOS 14 (Sonoma) or later — check  → About This Mac
+- [Claude Code](https://claude.ai/claude-code) — the `claude` CLI app
+- Node.js version 20 or later — run `node --version` to check
 
-**Optional**
-- Python 3.11+ — for voice services
-- [faster-whisper-server](https://github.com/fedirz/faster-whisper-server) or compatible STT
-- [kokoro-onnx](https://github.com/thewh1teagle/kokoro-onnx) TTS server
-- Telegram account — for remote access
+**These are optional — only install what you want:**
+- Python 3.11+ — only needed for voice (Whisper + Kokoro)
+- [faster-whisper-server](https://github.com/fedirz/faster-whisper-server) — speech-to-text for voice mode
+- [kokoro-onnx](https://github.com/thewh1teagle/kokoro-onnx) — text-to-speech for voice mode
+- A Telegram account — only needed if you want to control your agent from your phone
 
 ---
 
