@@ -15,7 +15,7 @@
 │  Tools: 4 MCP servers + built-in Task/Bash/Read/etc.        │
 └────────┬──────────┬──────────┬──────────┬───────────────────┘
          │          │          │          │
-    nova-mac   nova-memory  nova-agents  nova-telegram
+    helix-mac   helix-memory  helix-agents  helix-telegram
          │          │          │          │
     macOS +    JSON store   launchd +   Telegram bot
     Chrome                  spawning
@@ -25,7 +25,7 @@
 
 ## The Four MCP Servers
 
-### nova-mac — macOS System Control
+### helix-mac — macOS System Control
 
 Exposes macOS capabilities to Claude via AppleScript and CDP:
 
@@ -42,7 +42,7 @@ Exposes macOS capabilities to Claude via AppleScript and CDP:
 
 ---
 
-### nova-memory — Persistent JSON Memory
+### helix-memory — Persistent JSON Memory
 
 A lightweight JSON-based memory store that survives across Claude sessions:
 
@@ -65,7 +65,7 @@ Key operations:
 
 ---
 
-### nova-agents — Background Agent Orchestration
+### helix-agents — Background Agent Orchestration
 
 Spawns and manages background Claude processes:
 
@@ -89,7 +89,7 @@ Key operations:
 
 ---
 
-### nova-telegram — Remote Access
+### helix-telegram — Remote Access
 
 A grammY-based Telegram bot that relays commands to Claude:
 
@@ -100,8 +100,8 @@ A grammY-based Telegram bot that relays commands to Claude:
 - Allowlist: only responds to configured user IDs
 
 **Cross-session handoffs:**
-- `/handoff` → stores session context in nova-memory
-- `/catchup` → retrieves latest handoff from nova-memory
+- `/handoff` → stores session context in helix-memory
+- `/catchup` → retrieves latest handoff from helix-memory
 - Works from any channel (voice, text, Telegram)
 
 **When to use:** Remote access when away from the Mac.

@@ -6,7 +6,7 @@ import { z } from "zod";
 import { startBot, stopBot, botStatus, sendToChief } from "./bot.js";
 
 const server = new McpServer({
-  name: "nova-telegram",
+  name: "helix-telegram",
   version: "1.0.0",
 });
 
@@ -66,7 +66,7 @@ server.tool(
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("nova-telegram MCP server running (4 tools registered)");
+  console.error("helix-telegram MCP server running (4 tools registered)");
 
   // Auto-start bot polling
   const result = startBot();

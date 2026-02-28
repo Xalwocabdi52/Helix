@@ -30,10 +30,10 @@ Four MCP servers that plug directly into Claude Code:
 
 | Server | What it does |
 |--------|-------------|
-| `nova-mac` | macOS control — apps, Chrome, Calendar, Reminders, Notes, Music, Finder |
-| `nova-memory` | Persistent JSON memory with keyword search — survives across sessions |
-| `nova-agents` | Spawn background Claude agents, schedule them via launchd, coordinate via messages |
-| `nova-telegram` | Remote access — control your agent from your phone via Telegram |
+| `helix-mac` | macOS control — apps, Chrome, Calendar, Reminders, Notes, Music, Finder |
+| `helix-memory` | Persistent JSON memory with keyword search — survives across sessions |
+| `helix-agents` | Spawn background Claude agents, schedule them via launchd, coordinate via messages |
+| `helix-telegram` | Remote access — control your agent from your phone via Telegram |
 
 Plus three layers on top:
 
@@ -72,15 +72,15 @@ Helix is the macOS-native alternative to frameworks like OpenClawd — built fro
 ```
 You ←→ Claude Code (claude CLI)
            │
-           ├── nova-mac      → macOS + Chrome
-           ├── nova-memory   → Persistent state
-           ├── nova-agents   → Background workers + scheduling
-           └── nova-telegram → Telegram relay
+           ├── helix-mac      → macOS + Chrome
+           ├── helix-memory   → Persistent state
+           ├── helix-agents   → Background workers + scheduling
+           └── helix-telegram → Telegram relay
                     │
               CLAUDE.md  ·  .env
 ```
 
-Loops run on launchd schedules, write logs to `agents/logs/`, and surface blockers via `agents/messages/pending-tasks.json`. Voice, text, and Telegram sessions all share state through `nova-memory`.
+Loops run on launchd schedules, write logs to `agents/logs/`, and surface blockers via `agents/messages/pending-tasks.json`. Voice, text, and Telegram sessions all share state through `helix-memory`.
 
 → [Full architecture docs](docs/ARCHITECTURE.md)
 
@@ -113,7 +113,7 @@ bash scripts/setup.sh
 Installs and builds all 4 MCP servers. Manual alternative:
 
 ```bash
-for server in mcp-servers/nova-mac mcp-servers/nova-memory mcp-servers/nova-agents mcp-servers/nova-telegram; do
+for server in mcp-servers/helix-mac mcp-servers/helix-memory mcp-servers/helix-agents mcp-servers/helix-telegram; do
   cd $server && npm install && npm run build && cd ../..
 done
 ```
@@ -153,7 +153,7 @@ All 4 MCP tools load automatically. Test with `memory_remember`, `app_list`, or 
 
 **MCP server not loading** — check `claude mcp list` for errors, or run the server manually:
 ```bash
-node mcp-servers/nova-mac/dist/index.js
+node mcp-servers/helix-mac/dist/index.js
 ```
 
 **Telegram not responding** — verify the bot token and confirm your user ID is in `TELEGRAM_ALLOWED_USER_IDS`:
@@ -262,10 +262,10 @@ helix/
 ├── CLAUDE.md                        # Agent identity — start here
 ├── .env.example                     # All variables documented
 ├── mcp-servers/
-│   ├── nova-mac/                    # macOS + Chrome control
-│   ├── nova-memory/                 # Persistent JSON memory
-│   ├── nova-agents/                 # Agent spawning + scheduling
-│   └── nova-telegram/               # Telegram relay
+│   ├── helix-mac/                    # macOS + Chrome control
+│   ├── helix-memory/                 # Persistent JSON memory
+│   ├── helix-agents/                 # Agent spawning + scheduling
+│   └── helix-telegram/               # Telegram relay
 ├── services/
 │   ├── voice-health-check.sh
 │   ├── voice-auto-recover.sh

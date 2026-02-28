@@ -41,7 +41,7 @@ This installs npm packages across all 4 MCP servers and builds TypeScript.
 If you prefer manual:
 
 ```bash
-for server in mcp-servers/nova-mac mcp-servers/nova-memory mcp-servers/nova-agents mcp-servers/nova-telegram; do
+for server in mcp-servers/helix-mac mcp-servers/helix-memory mcp-servers/helix-agents mcp-servers/helix-telegram; do
   cd $server && npm install && npm run build && cd ../..
 done
 ```
@@ -66,7 +66,7 @@ Then verify Claude can see the servers:
 claude mcp list
 ```
 
-You should see: `nova-mac`, `nova-memory`, `nova-agents`, `nova-telegram`.
+You should see: `helix-mac`, `helix-memory`, `helix-agents`, `helix-telegram`.
 
 ---
 
@@ -133,7 +133,7 @@ A real-world anonymized example is in `examples/content-loop/`.
    TELEGRAM_BOT_TOKEN=your-token
    TELEGRAM_ALLOWED_USER_IDS=your-id
    ```
-4. The `nova-telegram` MCP server starts the bot when Claude starts
+4. The `helix-telegram` MCP server starts the bot when Claude starts
 5. Message your bot — it relays commands to Claude
 
 ---
@@ -143,7 +143,7 @@ A real-world anonymized example is in `examples/content-loop/`.
 **MCP server not loading:**
 - Check `claude mcp list` for error messages
 - Verify NODE_BIN in `.mcp.json` points to a real node binary
-- Run `node mcp-servers/nova-mac/dist/index.js` manually to see startup errors
+- Run `node mcp-servers/helix-mac/dist/index.js` manually to see startup errors
 
 **Voice not working:**
 - Run `bash services/voice-health-check.sh` — read the output

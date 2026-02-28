@@ -9,7 +9,7 @@ import { logsTools } from "./tools/logs.js";
 import { recoverTools } from "./tools/recover.js";
 
 const server = new McpServer({
-  name: "nova-agents",
+  name: "helix-agents",
   version: "1.0.0",
 });
 
@@ -33,7 +33,7 @@ for (const [name, tool] of Object.entries(allTools)) {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error(`nova-agents MCP server running (${Object.keys(allTools).length} tools registered)`);
+  console.error(`helix-agents MCP server running (${Object.keys(allTools).length} tools registered)`);
 }
 
 main().catch((error) => {

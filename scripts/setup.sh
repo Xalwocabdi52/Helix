@@ -57,7 +57,7 @@ echo ""
 # ── Build MCP servers ─────────────────────────────────────────────────────────
 echo "Building MCP servers..."
 
-for server in nova-mac nova-memory nova-agents nova-telegram; do
+for server in helix-mac helix-memory helix-agents helix-telegram; do
   SERVER_DIR="$HELIX_ROOT/mcp-servers/$server"
   if [ -d "$SERVER_DIR" ]; then
     echo "  Building $server..."
@@ -107,7 +107,7 @@ echo ""
 # ── Verify MCP servers with claude ──────────────────────────────────────────
 echo "Verifying MCP server registration..."
 MCP_LIST=$(claude mcp list 2>&1 || true)
-for server in nova-mac nova-memory nova-agents nova-telegram; do
+for server in helix-mac helix-memory helix-agents helix-telegram; do
   if echo "$MCP_LIST" | grep -q "$server"; then
     echo "  ✓ $server"
   else

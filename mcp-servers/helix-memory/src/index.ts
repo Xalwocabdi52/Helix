@@ -9,7 +9,7 @@ import { contextTools } from "./tools/context.js";
 import { forgetTools } from "./tools/forget.js";
 
 const server = new McpServer({
-  name: "nova-memory",
+  name: "helix-memory",
   version: "1.0.0",
 });
 
@@ -33,7 +33,7 @@ for (const [name, tool] of Object.entries(allTools)) {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error(`nova-memory MCP server running (${Object.keys(allTools).length} tools registered)`);
+  console.error(`helix-memory MCP server running (${Object.keys(allTools).length} tools registered)`);
 }
 
 main().catch((error) => {

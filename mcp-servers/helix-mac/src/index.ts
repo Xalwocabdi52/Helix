@@ -16,7 +16,7 @@ import { finderTools } from "./tools/finder.js";
 import { shortcutsTools } from "./tools/shortcuts.js";
 
 const server = new McpServer({
-  name: "nova-mac",
+  name: "helix-mac",
   version: "1.0.0",
 });
 
@@ -50,7 +50,7 @@ for (const [name, tool] of Object.entries(allTools)) {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error(`nova-mac MCP server running (${Object.keys(allTools).length} tools registered)`);
+  console.error(`helix-mac MCP server running (${Object.keys(allTools).length} tools registered)`);
 }
 
 main().catch((error) => {

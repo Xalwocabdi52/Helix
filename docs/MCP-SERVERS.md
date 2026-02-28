@@ -4,7 +4,7 @@ Complete tool reference for all four Helix MCP servers.
 
 ---
 
-## nova-mac — macOS System Control
+## helix-mac — macOS System Control
 
 ### App Control
 
@@ -61,7 +61,7 @@ Complete tool reference for all four Helix MCP servers.
 
 ---
 
-## nova-memory — Persistent Memory
+## helix-memory — Persistent Memory
 
 ### Core Operations
 
@@ -90,7 +90,7 @@ All memories are stored in `memory/memories.json` — a flat JSON array, keyword
 
 ---
 
-## nova-agents — Agent Orchestration
+## helix-agents — Agent Orchestration
 
 ### Spawning
 
@@ -128,7 +128,7 @@ All memories are stored in `memory/memories.json` — a flat JSON array, keyword
 
 ---
 
-## nova-telegram — Remote Access
+## helix-telegram — Remote Access
 
 ### Bot Behavior
 

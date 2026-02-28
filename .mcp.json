@@ -1,31 +1,31 @@
 {
   "mcpServers": {
-    "nova-mac": {
+    "helix-mac": {
       "command": "NODE_BIN",
-      "args": ["PROJECT_ROOT/mcp-servers/nova-mac/dist/index.js"],
+      "args": ["PROJECT_ROOT/mcp-servers/helix-mac/dist/index.js"],
       "env": {
         "PROJECT_ROOT": "PROJECT_ROOT"
       }
     },
-    "nova-memory": {
+    "helix-memory": {
       "command": "NODE_BIN",
-      "args": ["PROJECT_ROOT/mcp-servers/nova-memory/dist/index.js"],
+      "args": ["PROJECT_ROOT/mcp-servers/helix-memory/dist/index.js"],
       "env": {
         "MEMORY_DIR": "PROJECT_ROOT/memory",
         "PROJECT_ROOT": "PROJECT_ROOT"
       }
     },
-    "nova-agents": {
+    "helix-agents": {
       "command": "NODE_BIN",
-      "args": ["PROJECT_ROOT/mcp-servers/nova-agents/dist/index.js"],
+      "args": ["PROJECT_ROOT/mcp-servers/helix-agents/dist/index.js"],
       "env": {
         "PROJECT_ROOT": "PROJECT_ROOT",
         "CLAUDE_BIN": "CLAUDE_BIN"
       }
     },
-    "nova-telegram": {
+    "helix-telegram": {
       "command": "NODE_BIN",
-      "args": ["PROJECT_ROOT/mcp-servers/nova-telegram/dist/index.js"],
+      "args": ["PROJECT_ROOT/mcp-servers/helix-telegram/dist/index.js"],
       "env": {
         "PROJECT_ROOT": "PROJECT_ROOT",
         "CLAUDE_BIN": "CLAUDE_BIN"

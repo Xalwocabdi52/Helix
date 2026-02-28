@@ -1,7 +1,7 @@
 {
-  "name": "nova-telegram",
+  "name": "helix-agents",
   "version": "1.0.0",
-  "description": "NOVA remote access via Telegram bot MCP server",
+  "description": "NOVA agent spawning and scheduling MCP server",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "grammy": "^1.21.0",
     "zod": "^3.22.0"
   },
   "devDependencies": {

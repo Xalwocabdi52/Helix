@@ -8,9 +8,9 @@
     "install:all": "npm install --workspaces"
   },
   "workspaces": [
-    "mcp-servers/nova-mac",
-    "mcp-servers/nova-memory",
-    "mcp-servers/nova-agents",
-    "mcp-servers/nova-telegram"
+    "mcp-servers/helix-mac",
+    "mcp-servers/helix-memory",
+    "mcp-servers/helix-agents",
+    "mcp-servers/helix-telegram"
   ]
 }

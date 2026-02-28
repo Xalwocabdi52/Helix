@@ -198,7 +198,7 @@ async function handleHandoff(ctx: Context): Promise<void> {
 
   try {
     const response = await relayToClaude(
-      "The Chief wants a handoff. Summarize this Telegram conversation so far: what we discussed, key decisions, current state, and next steps. Then store it in nova-memory with category 'conversation' and tag 'handoff'. Keep the summary concise but complete.",
+      "The Chief wants a handoff. Summarize this Telegram conversation so far: what we discussed, key decisions, current state, and next steps. Then store it in helix-memory with category 'conversation' and tag 'handoff'. Keep the summary concise but complete.",
       userId
     );
     const chunks = splitMessage(response);

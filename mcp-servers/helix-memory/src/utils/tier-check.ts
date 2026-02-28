@@ -1,5 +1,5 @@
 /**
- * Tier Permission Helpers (shared with nova-agents)
+ * Tier Permission Helpers (shared with helix-agents and helix-mac)
  *
  * Utility functions for checking session tier permissions in tools
  */
