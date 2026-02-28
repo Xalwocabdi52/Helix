@@ -1,0 +1,107 @@
+{
+  "blocked_commands": [
+    "sudo\\s+",
+    "su\\s+",
+    "rm\\s+-rf\\s+/",
+    "rm\\s+.*\\s+/System",
+    "rm\\s+.*\\s+/Library",
+    "rm\\s+.*\\s+/usr",
+    "mkfs",
+    "dd\\s+if=.*of=/dev/",
+    "diskutil.*erase",
+    "kill\\s+-9\\s+1\\s",
+    "killall\\s+-9",
+    "chmod\\s+[0-7]{3}\\s+/",
+    "chown\\s+.*\\s+/",
+    ">/etc/",
+    "defaults\\s+write\\s+/System"
+  ],
+  "restricted_paths": [
+    "/System",
+    "/Library",
+    "/usr",
+    "/bin",
+    "/sbin",
+    "/etc",
+    "/var",
+    "/private"
+  ],
+  "safe_paths": [
+    "~/Desktop",
+    "~/Documents",
+    "~/Downloads",
+    "~/Pictures",
+    "~/Movies",
+    "~/Music",
+    "/tmp",
+    "/var/tmp"
+  ],
+  "critical_files": [
+    "/etc/passwd",
+    "/etc/sudoers",
+    "/etc/hosts",
+    "/etc/fstab",
+    "/System/Library/LaunchDaemons",
+    "/System/Library/LaunchAgents"
+  ],
+  "max_concurrent_agents": 6,
+  "agent_timeout_minutes": 20,
+  "max_nesting_depth": 2,
+  "rate_limits": {
+    "spawns_per_hour": 100,
+    "memory_writes_per_agent": 1000,
+    "tool_calls_per_agent": 10000
+  },
+  "tier_permissions": {
+    "orchestrator": {
+      "description": "Main NOVA session (full access)",
+      "app_control": true,
+      "chrome_navigation": true,
+      "chrome_read": true,
+      "shell_execution": true,
+      "memory_write": true,
+      "memory_read": true,
+      "agent_spawn": true,
+      "filesystem_write": true,
+      "filesystem_read": true
+    },
+    "telegram": {
+      "description": "Remote Telegram access (full access with confirmations)",
+      "app_control": true,
+      "chrome_navigation": true,
+      "chrome_read": true,
+      "shell_execution": true,
+      "memory_write": true,
+      "memory_read": true,
+      "agent_spawn": true,
+      "filesystem_write": true,
+      "filesystem_read": true,
+      "notes": "Destructive operations should require user confirmation via Telegram"
+    },
+    "scheduled": {
+      "description": "Autonomous scheduled task (read-mostly, memory writes allowed)",
+      "app_control": false,
+      "chrome_navigation": false,
+      "chrome_read": true,
+      "shell_execution": false,
+      "memory_write": true,
+      "memory_read": true,
+      "agent_spawn": true,
+      "filesystem_write": false,
+      "filesystem_read": true
+    },
+    "background": {
+      "description": "Background worker (read-only, cannot spawn)",
+      "app_control": false,
+      "chrome_navigation": false,
+      "chrome_read": false,
+      "shell_execution": false,
+      "memory_write": false,
+      "memory_read": true,
+      "agent_spawn": false,
+      "filesystem_write": false,
+      "filesystem_read": true,
+      "notes": "Can only access safe paths: NOVA_ROOT, /tmp, ~/Documents, ~/Desktop"
+    }
+  }
+}

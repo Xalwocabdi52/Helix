@@ -1,0 +1,16 @@
+{
+  "name": "helix",
+  "version": "1.0.0",
+  "description": "A personal AI OS for macOS, powered by Claude.",
+  "private": true,
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "install:all": "npm install --workspaces"
+  },
+  "workspaces": [
+    "mcp-servers/nova-mac",
+    "mcp-servers/nova-memory",
+    "mcp-servers/nova-agents",
+    "mcp-servers/nova-telegram"
+  ]
+}

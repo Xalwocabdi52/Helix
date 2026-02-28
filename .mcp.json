@@ -1,0 +1,35 @@
+{
+  "mcpServers": {
+    "nova-mac": {
+      "command": "NODE_BIN",
+      "args": ["PROJECT_ROOT/mcp-servers/nova-mac/dist/index.js"],
+      "env": {
+        "PROJECT_ROOT": "PROJECT_ROOT"
+      }
+    },
+    "nova-memory": {
+      "command": "NODE_BIN",
+      "args": ["PROJECT_ROOT/mcp-servers/nova-memory/dist/index.js"],
+      "env": {
+        "MEMORY_DIR": "PROJECT_ROOT/memory",
+        "PROJECT_ROOT": "PROJECT_ROOT"
+      }
+    },
+    "nova-agents": {
+      "command": "NODE_BIN",
+      "args": ["PROJECT_ROOT/mcp-servers/nova-agents/dist/index.js"],
+      "env": {
+        "PROJECT_ROOT": "PROJECT_ROOT",
+        "CLAUDE_BIN": "CLAUDE_BIN"
+      }
+    },
+    "nova-telegram": {
+      "command": "NODE_BIN",
+      "args": ["PROJECT_ROOT/mcp-servers/nova-telegram/dist/index.js"],
+      "env": {
+        "PROJECT_ROOT": "PROJECT_ROOT",
+        "CLAUDE_BIN": "CLAUDE_BIN"
+      }
+    }
+  }
+}

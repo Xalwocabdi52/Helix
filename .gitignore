@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+dist/
+
+# Environment — NEVER commit real values
+.env
+
+# Secrets & credentials
+*.pem
+*.key
+*.cert
+.wrangler/
+.claude/
+
+# Runtime state
+memory/memories.json
+memory/preferences.json
+memory/chief_profile.json
+memory/engagement-log.json
+agents/telegram-sessions.json
+agents/logs/
+agents/messages/*.json
+
+# macOS
+.DS_Store
+*.swp
+
+# Build artifacts
+*.js.map
+
+# Wrangler cache
+node_modules/.cache/wrangler/
+
+# Generated outputs
+morning-brief.html
+morning-brief-data.json

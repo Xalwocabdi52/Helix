@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Change this label to match your loop name -->
+    <key>Label</key>
+    <string>com.helix.template-loop</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <!-- Update this path to your actual run.sh location -->
+        <string>/Users/YOURUSERNAME/Developer/Helix/services/template-loop/run.sh</string>
+    </array>
+
+    <!-- Environment variables passed to the script -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <!-- Update these paths to match your setup -->
+        <key>PROJECT_ROOT</key>
+        <string>/Users/YOURUSERNAME/Developer/Helix</string>
+        <key>CLAUDE_BIN</key>
+        <string>/Users/YOURUSERNAME/.local/bin/claude</string>
+        <key>NODE_BIN</key>
+        <string>/Users/YOURUSERNAME/.nvm/versions/node/v20.0.0/bin/node</string>
+        <key>HOME</key>
+        <string>/Users/YOURUSERNAME</string>
+        <!-- Prevents nested Claude sessions from inheriting parent session context -->
+        <key>CLAUDECODE</key>
+        <string></string>
+    </dict>
+
+    <!-- How often to run (seconds). 1800 = every 30 minutes -->
+    <key>StartInterval</key>
+    <integer>1800</integer>
+
+    <!-- Log output -->
+    <key>StandardOutPath</key>
+    <string>/Users/YOURUSERNAME/Developer/Helix/agents/logs/com.helix.template-loop.stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/YOURUSERNAME/Developer/Helix/agents/logs/com.helix.template-loop.stderr.log</string>
+
+    <!-- Run immediately on load, not just on next interval -->
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
