@@ -49,6 +49,24 @@ Plus three layers on top:
 
 ---
 
+## Built to Stay Inside the Lines
+
+Helix is the macOS-native alternative to frameworks like OpenClawd — built from the start for **control, security, and long-term scalability**, without touching Anthropic's Terms of Service.
+
+**How it stays compliant:**
+
+- **Official tooling only.** Helix runs Claude Code's `claude` CLI — the same tool you use interactively, just called headlessly via `claude --print`. This is an explicitly documented and supported use case. No unofficial API access, no session hijacking, no key scraping.
+- **No third-party AI.** Every inference call goes through your own Claude subscription. No OpenAI, no Gemini, no model proxies. One model, one account, your control.
+- **MCP is the sanctioned extension layer.** Anthropic built and maintains the Model Context Protocol specifically so developers can extend Claude with custom tools. Helix uses it exactly as designed.
+- **Agentic use is documented.** Multi-agent orchestration, background `claude` processes, scheduled tasks — all of these are first-party patterns that appear in Anthropic's own Claude Code documentation with examples.
+- **Nothing leaves your machine.** Memory is local JSON. Voice runs on local Whisper and Kokoro servers. Logs stay on disk. Your data doesn't touch a cloud you don't control.
+
+**What this means for you:** Helix can run autonomously, indefinitely, without the risk of your account being flagged or your access cut off because a framework was doing something it shouldn't. Build on a foundation that's designed to last.
+
+> **Note on loops:** The framework itself is TOS-safe. What your loops *do* is your responsibility — check the terms of any platform you interact with, use official APIs where they exist, and disclose AI involvement where required.
+
+---
+
 ## Architecture
 
 ```
